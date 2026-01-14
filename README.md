@@ -93,8 +93,6 @@ flowchart LR
     C --> D[Dense Layer<br/>Sigmoid]
     D --> E[Multi-label<br/>Predictions]
 
-    style B fill:#e1f5fe
-    style D fill:#fff3e0
 ```
 
 #### YOLO 11
@@ -109,8 +107,6 @@ flowchart LR
     D --> E[Softmax]
     E --> F[Binary<br/>Prediction]
 
-    style B fill:#e8f5e9
-    style D fill:#fce4ec
 ```
 
 ## Getting Started
