@@ -15,21 +15,71 @@ The project explores two classification paradigms:
 
 | Strategy      | Model                  | Framework   | Pretrained Weights  |
 | ------------- | ---------------------- | ----------- | ------------------- |
-| CLIP Binary   | ViT-B-16               | OpenCLIP    | `laion2b_s34b_b88k` |
-| KNN Binary    | Multiple (see note ^1) | torchvision | ImageNet            |
 | YOLO11 Binary | YOLO11m-cls            | Ultralytics | ImageNet            |
+| KNN Binary    | Multiple (see note ^1) | torchvision | ImageNet            |
+| CLIP Binary   | ViT-B-16               | OpenCLIP    | `laion2b_s34b_b88k` |
 
 ### Multi-label Classification
 
 | Strategy         | Model                  | Framework   | Pretrained Weights  |
 | ---------------- | ---------------------- | ----------- | ------------------- |
-| CLIP Multi-label | ViT-B-16               | OpenCLIP    | `laion2b_s34b_b88k` |
-| KNN Multi-label  | Multiple (see note ^1) | torchvision | ImageNet            |
 | CNN Multi-label  | EfficientNetV2B0       | TensorFlow  | ImageNet            |
+| KNN Multi-label  | Multiple (see note ^1) | torchvision | ImageNet            |
+| CLIP Multi-label | ViT-B-16               | OpenCLIP    | `laion2b_s34b_b88k` |
 
 > **^1 KNN Feature Extractors**: The KNN notebooks evaluate multiple pretrained models as feature extractors: ResNeXt-101, EfficientNet V2, ConvNeXt, ViT, Swin Transformer, and DINOv2.
 
 ### Architecture Details
+
+#### YOLO 11
+
+Leverages the classification variant of YOLO11 for efficient binary classification.
+
+```mermaid
+flowchart LR
+    A[Image] --> B[YOLO11m-cls<br/>Backbone]
+    B --> C[Feature<br/>Extraction]
+    C --> D[Classification<br/>Head]
+    D --> E[Softmax]
+    E --> F[Binary<br/>Prediction]
+
+```
+
+#### CNN
+
+Fine-tunes EfficientNetV2 with transfer learning for multi-label prediction.
+
+```mermaid
+flowchart LR
+    A[Image] --> B["EfficientNetV2B0<br/>Backbone<br/>pooling='avg'"]
+    B --> C[Dropout]
+    C --> D[Dense Layer<br/>Sigmoid]
+    D --> E[Multi-label<br/>Predictions]
+
+```
+
+#### k-NN
+
+Extracts feature embeddings using pretrained models (see note ^1) and classifies based on similarity to labeled training examples.
+
+```mermaid
+flowchart LR
+    subgraph Training
+        A1[Training<br/>Images] --> B1[Pretrained<br/>Feature Extractor]
+        B1 --> C1[Feature<br/>Store]
+        L1[Labels] --> C1
+    end
+
+    subgraph Inference
+        A2[Test<br/>Image] --> B2[Pretrained<br/>Feature Extractor]
+        B2 --> D[Query<br/>Embedding]
+    end
+
+    C1 --> E[K-Nearest<br/>Neighbors]
+    D --> E
+    E --> F[Majority<br/>Vote]
+    F --> G[Prediction]
+```
 
 #### CLIP
 
@@ -59,56 +109,6 @@ flowchart LR
     G --> H[Prediction]
 ```
 
-#### k-NN
-
-Extracts feature embeddings using pretrained models (see note ^1) and classifies based on similarity to labeled training examples.
-
-```mermaid
-flowchart LR
-    subgraph Training
-        A1[Training<br/>Images] --> B1[Pretrained<br/>Feature Extractor]
-        B1 --> C1[Feature<br/>Store]
-        L1[Labels] --> C1
-    end
-
-    subgraph Inference
-        A2[Test<br/>Image] --> B2[Pretrained<br/>Feature Extractor]
-        B2 --> D[Query<br/>Embedding]
-    end
-
-    C1 --> E[K-Nearest<br/>Neighbors]
-    D --> E
-    E --> F[Majority<br/>Vote]
-    F --> G[Prediction]
-```
-
-#### CNN
-
-Fine-tunes EfficientNetV2 with transfer learning for multi-label prediction.
-
-```mermaid
-flowchart LR
-    A[Image] --> B["EfficientNetV2B0<br/>Backbone<br/>pooling='avg'"]
-    B --> C[Dropout]
-    C --> D[Dense Layer<br/>Sigmoid]
-    D --> E[Multi-label<br/>Predictions]
-
-```
-
-#### YOLO 11
-
-Leverages the classification variant of YOLO11 for efficient binary classification.
-
-```mermaid
-flowchart LR
-    A[Image] --> B[YOLO11m-cls<br/>Backbone]
-    B --> C[Feature<br/>Extraction]
-    C --> D[Classification<br/>Head]
-    D --> E[Softmax]
-    E --> F[Binary<br/>Prediction]
-
-```
-
 ## Getting Started
 
 All notebooks are designed to run in Google Colab with GPU acceleration. Before running:
@@ -120,4 +120,4 @@ All notebooks are designed to run in Google Colab with GPU acceleration. Before 
    - `ROBOFLOW_PROJECT_ID`
    - `ROBOFLOW_DATASET_VERSION`
 
-Due to copyright reasons, we cannot provide the dataset we used.
+> Due to copyright reasons, we cannot provide the dataset we used.
