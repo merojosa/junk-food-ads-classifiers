@@ -88,7 +88,7 @@ Fine-tunes EfficientNetV2 with transfer learning for multi-label prediction.
 
 ```mermaid
 flowchart LR
-    A[Image] --> B[EfficientNetV2B0<br/>Backbone (avg pooled)]
+    A[Image] --> B["EfficientNetV2B0<br/>Backbone<br/>pooling='avg'"]
     B --> C[Dropout]
     C --> D[Dense Layer<br/>Sigmoid]
     D --> E[Multi-label<br/>Predictions]
