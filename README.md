@@ -39,7 +39,7 @@ Zero-shot classification by comparing image embeddings against text descriptions
 flowchart LR
     subgraph Input
         A[Image]
-        B["Text Prompts<br/>'junk food ad'<br/>'not junk food ad'"]
+        B["Text Prompts<br/>templates per class<br/>(e.g. 'junk food ad', 'not a junk food ad')"]
     end
 
     subgraph CLIP["CLIP ViT-B-16"]
@@ -88,24 +88,23 @@ Fine-tunes EfficientNetV2 with transfer learning for multi-label prediction.
 
 ```mermaid
 flowchart LR
-    A[Image] --> B[EfficientNetV2<br/>Backbone]
-    B --> C[Global Average<br/>Pooling]
-    C --> D[Dense Layer<br/>+ Dropout]
-    D --> E[Output Layer<br/>Sigmoid]
-    E --> F[Multi-label<br/>Predictions]
+    A[Image] --> B[EfficientNetV2B0<br/>Backbone (avg pooled)]
+    B --> C[Dropout]
+    C --> D[Dense Layer<br/>Sigmoid]
+    D --> E[Multi-label<br/>Predictions]
 
     style B fill:#e1f5fe
-    style E fill:#fff3e0
+    style D fill:#fff3e0
 ```
 
 #### YOLO 11
 
-Leverages the classification variant of YOLO11 for efficient binary detection.
+Leverages the classification variant of YOLO11 for efficient binary classification.
 
 ```mermaid
 flowchart LR
     A[Image] --> B[YOLO11m-cls<br/>Backbone]
-    B --> C[Feature<br/>Pyramid]
+    B --> C[Feature<br/>Extraction]
     C --> D[Classification<br/>Head]
     D --> E[Softmax]
     E --> F[Binary<br/>Prediction]
