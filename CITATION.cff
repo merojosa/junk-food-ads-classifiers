@@ -5,9 +5,9 @@ type: software
 authors:
   - family-names: "Mejías"
     given-names: "Jose"
-  - family-names: "Quesada-López"
-    given-names: "Christian"
   - family-names: "Jiménez"
     given-names: "Alejandro"
+  - family-names: "Quesada-López"
+    given-names: "Christian"
 repository-code: "https://github.com/TODO/junk-food-ads-classifiers"
 year: 2026
