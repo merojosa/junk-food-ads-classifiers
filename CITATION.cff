@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use this work in your research, please cite it as below."
+title: "Binary and Multi-label Classification of Junk Food Ads: A Comparative Evaluation of Strategies"
+type: software
+authors:
+  - family-names: "Mejías"
+    given-names: "Jose"
+  - family-names: "Quesada-López"
+    given-names: "Christian"
+  - family-names: "Jiménez"
+    given-names: "Alejandro"
+repository-code: "https://github.com/TODO/junk-food-ads-classifiers"
+year: 2026
